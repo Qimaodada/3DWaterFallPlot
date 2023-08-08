@@ -8,11 +8,27 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    connect(timer, &QTimer::timeout, this, &MainWindow::timeout);  // 连接定时器显示时间
 }
 
-MainWindow::~MainWindow()
+void MainWindow::timeout()  // 定时器槽函数
 {
-    delete ui;
+    qDebug() << " ----- ";
+//    QBar3DSeries *seriesBar = new QBar3DSeries;
+//    QBarDataRow *dataBar = new QBarDataRow;
+//    for(float i = 0; i < 1000; i++)
+//    {
+//        if(i == 0){
+//            *dataBar << 100;
+//            continue;
+//        }
+//        if(i >= 400 && i <= 600){
+//            *dataBar << 50 + rand() % 10;
+//        }else{
+//            *dataBar << rand() % 30;
+//        }
+//    }
+//    seriesBar->dataProxy()->addRow(dataBar);
 }
 
 void MainWindow::on_pushButton_clicked()    // 显示3d平面图
@@ -88,22 +104,27 @@ void MainWindow::on_pushButton_clicked()    // 显示3d平面图
     flatSurface.show();
 }
 
-void MainWindow::on_pushButton_2_clicked()      // 显示3d柱状图
+void MainWindow::on_pushButton_2_clicked()  // 显示3d柱状图
 {
     bars.setFlags(bars.flags() ^ Qt::FramelessWindowHint); // 取消窗口边框 显示主界面菜单栏
     bars.setWidth(800);
     bars.setHeight(600);
+    bars.setBarSpacing(QSizeF(0,50));  // QSizeF为X和Z维度上的条形图间距
 
-    bars.rowAxis()->setRange(0, 100);
-    bars.columnAxis()->setRange(0, 100);
+//    bars.rowAxis()->setRange(0, 100);  //Z轴(行)的范围，最多可包含n行，也就是在Z轴方向上最多有五个数据点
+//    bars.columnAxis()->setRange(0, 100); //X轴(列)的范围，最多可包含n列
     QBar3DSeries *seriesBar = new QBar3DSeries;
 
-    for(int j = 0;j < 100; j++)
+    for(int j = 0;j < 30; j++)
     {
         QBarDataRow *dataBar = new QBarDataRow;
-        for(float i = 0; i < 100; i+=1)
+        for(float i = 0; i < 1000; i++)
         {
-            if(i >= 40 && i <=60){
+            if(i == 0){
+                *dataBar << 100;
+                continue;
+            }
+            if(i >= 400 && i <= 600){
                 *dataBar << 50 + rand() % 10;
             }else{
                 *dataBar << rand() % 30;
@@ -113,6 +134,15 @@ void MainWindow::on_pushButton_2_clicked()      // 显示3d柱状图
     }
 
     bars.addSeries(seriesBar);
+
+    timer->start(1000);
+
     bars.show();
 
+}
+
+
+MainWindow::~MainWindow()
+{
+    delete ui;
 }

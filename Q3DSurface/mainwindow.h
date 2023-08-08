@@ -23,17 +23,21 @@ public:
 
 
 public:
-    QtDataVisualization::Q3DSurface flatSurface;
-
-    Q3DBars bars;
+    void timeout();                  // 定时器槽函数
 
 private slots:
 
-    void on_pushButton_clicked();   // 显示3d平面图
+    void on_pushButton_clicked();    // 显示3d平面图
 
     void on_pushButton_2_clicked();  // 显示3d柱状图
 
 private:
     Ui::MainWindow *ui;
+
+    QtDataVisualization::Q3DSurface flatSurface;
+
+    Q3DBars bars;
+
+    QTimer * timer = new QTimer;
 };
 #endif // MAINWINDOW_H
