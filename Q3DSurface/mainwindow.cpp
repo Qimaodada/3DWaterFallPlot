@@ -8,22 +8,31 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    //旋转图形按住鼠标右键并移动鼠标    缩放使用鼠标滚轮
+}
 
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+void MainWindow::on_pushButton_clicked()    // 显示3d平面图
+{
     // 创建一个3D表面对象
-    surface.setFlags(surface.flags() ^ Qt::FramelessWindowHint); // 取消窗口边框 显示主界面菜单栏
-    surface.setWidth(800);
-    surface.setHeight(600);
+    flatSurface.setFlags(flatSurface.flags() ^ Qt::FramelessWindowHint); // 取消窗口边框 显示主界面菜单栏
+    flatSurface.setWidth(800);
+    flatSurface.setHeight(600);
 
-    surface.axisX()->setTitle("X轴");
-    surface.axisX()->setTitleVisible(true);
-    surface.axisX()->setRange(0,100);
-    surface.axisY()->setTitle("Y轴");
-    surface.axisY()->setTitleVisible(true);
-    surface.axisY()->setRange(0,100);
-    surface.axisZ()->setTitle("Z轴");
-    surface.axisZ()->setTitleVisible(true);
-    surface.axisZ()->setRange(0,50);
+    flatSurface.axisX()->setTitle("X轴");
+    flatSurface.axisX()->setTitleVisible(true);
+    flatSurface.axisX()->setRange(0,100);
+    flatSurface.axisY()->setTitle("Y轴");
+    flatSurface.axisY()->setTitleVisible(true);
+    flatSurface.axisY()->setRange(0,100);
+    flatSurface.axisZ()->setTitle("Z轴");
+    flatSurface.axisZ()->setTitleVisible(true);
+    flatSurface.axisZ()->setRange(0,50);
+
+    flatSurface.activeTheme()->setGridEnabled(true);   // 坐标子网格线
 
     // 创建一个3D表面数据代理对象
     QtDataVisualization::QSurfaceDataProxy *proxy = new QtDataVisualization::QSurfaceDataProxy();
@@ -73,14 +82,37 @@ MainWindow::MainWindow(QWidget *parent)
 
     // 设置数据集
     proxy->resetArray(dataArray);
-    surface.addSeries(series);
+    flatSurface.addSeries(series);
 
     // 显示窗口
-    surface.show();
-
+    flatSurface.show();
 }
 
-MainWindow::~MainWindow()
+void MainWindow::on_pushButton_2_clicked()      // 显示3d柱状图
 {
-    delete ui;
+    bars.setFlags(bars.flags() ^ Qt::FramelessWindowHint); // 取消窗口边框 显示主界面菜单栏
+    bars.setWidth(800);
+    bars.setHeight(600);
+
+    bars.rowAxis()->setRange(0, 100);
+    bars.columnAxis()->setRange(0, 100);
+    QBar3DSeries *seriesBar = new QBar3DSeries;
+
+    for(int j = 0;j < 100; j++)
+    {
+        QBarDataRow *dataBar = new QBarDataRow;
+        for(float i = 0; i < 100; i+=1)
+        {
+            if(i >= 40 && i <=60){
+                *dataBar << 50 + rand() % 10;
+            }else{
+                *dataBar << rand() % 30;
+            }
+        }
+        seriesBar->dataProxy()->addRow(dataBar);
+    }
+
+    bars.addSeries(seriesBar);
+    bars.show();
+
 }
