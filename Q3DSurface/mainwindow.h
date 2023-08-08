@@ -5,6 +5,9 @@
 #include <QtDataVisualization>
 #include <QSurface>
 #include <QBoxLayout>
+
+#pragma execution_character_set("utf-8")
+
 using namespace QtDataVisualization;
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -20,14 +23,9 @@ public:
 
 
 public:
-    QSurface3DSeries *series;
-    Q3DSurface *groupBox;
-    QSurfaceDataArray * dataArray;
+    QtDataVisualization::Q3DSurface surface;
 
 private slots:
-    void on_pushButton_clicked();
-
-    void on_pushButton_2_clicked();
 
 private:
     Ui::MainWindow *ui;
