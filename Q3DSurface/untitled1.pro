@@ -20,7 +20,24 @@ SOURCES += \
     mainwindow.cpp
 
 HEADERS += \
-    mainwindow.h
+    CmnHdr.h \
+    DataChannelize.h \
+    DataFIRDF.h \
+    DataRead_Write.h \
+    OfflineError.h \
+    Resource.h \
+    SgnlPrcsDll.h \
+    SignalDemodFIR.h \
+    SignalDemodProbe.h \
+    SignalParamProbe.h \
+    SignalProcessing.h \
+    SpectrumProbe.h \
+    fftw3.h \
+    mainwindow.cpp.autosave \
+    mainwindow.h \
+    mainwindow.h.autosave \
+    stdafx.h \
+    targetver.h
 
 FORMS += \
     mainwindow.ui
@@ -29,3 +46,19 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+unix:!macx|win32: LIBS += -L$$PWD/../lib/ -ldemo_rec_new
+
+INCLUDEPATH += $$PWD/../
+DEPENDPATH += $$PWD/../
+
+win32:!win32-g++: PRE_TARGETDEPS += $$PWD/../lib/demo_rec_new.lib
+else:unix:!macx|win32-g++: PRE_TARGETDEPS += $$PWD/../lib/libdemo_rec_new.a
+
+unix:!macx|win32: LIBS += -L$$PWD/../lib/ -lfftw3
+
+INCLUDEPATH += $$PWD/../
+DEPENDPATH += $$PWD/../
+
+win32:!win32-g++: PRE_TARGETDEPS += $$PWD/../lib/fftw3.lib
+else:unix:!macx|win32-g++: PRE_TARGETDEPS += $$PWD/../lib/libfftw3.a
